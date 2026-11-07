@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "deduplicate": true,
+  "ipv4": true,
+  "ipv6": false,
+  "github_accelerate": false
+}

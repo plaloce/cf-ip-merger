@@ -1,0 +1,43 @@
+# ===== 编译产物（走 Release 分发，不进仓库）=====
+build/
+dist/
+*.spec
+*.exe
+*.zip
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ===== 运行时产物 =====
+优选合集.txt
+*- 副本.txt
+URL - 副本.txt
+*.log
+
+# ===== 编辑器 / 系统 =====
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== AI 工具私有目录（含个人笔记，绝对不能传）=====
+.workbuddy/
+
+# ===== 内部资料：不对外开源 =====
+# internal/ 集中存放开发文档、环境记录等内部资料，整目录忽略
+internal/
+
+# ===== 构建时自动生成（版本号源自 cf_merger/__init__.py）=====
+build_support/

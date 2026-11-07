@@ -1,0 +1,8 @@
+# CF 优选 IP 合集工具 - URL 配置
+# 每行一个来源，格式：URL，备注名称（英文逗号也可）
+# 以 # 开头的普通行是注释；在 URL 前加 # 表示该来源已禁用
+# 请在程序内保存，或编辑本文件后点击“重新加载”
+https://bestcf.pages.dev/domain/all.txt，精选全量版
+https://bestcf.pages.dev/vps789/top100.txt，VPS789 Top100
+https://bestcf.pages.dev/domain/ygkkk/all.txt，YGKKK 全量版
+https://bestcf.pages.dev/domain/qms/all.txt，QMS 全量版
