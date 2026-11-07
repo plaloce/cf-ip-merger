@@ -74,6 +74,8 @@ if errorlevel 1 goto :failed
 if exist "dist\CF优选IP合并工具.exe.previous" del /Q "dist\CF优选IP合并工具.exe.previous" >nul
 
 echo [4/4] 整理发布文件...
+rem 清理第三方组件（如显卡驱动）可能写入输出目录的日志目录
+if exist "dist\NVIDIA Corporation" rmdir /S /Q "dist\NVIDIA Corporation" >nul 2>&1
 rem 发布包必须使用根目录示例配置，避免把本机测试来源与设置打进去
 copy /Y "URL.txt" "dist\URL.txt" >nul
 if errorlevel 1 goto :failed

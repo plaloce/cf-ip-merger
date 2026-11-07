@@ -7,6 +7,7 @@ from pathlib import Path
 CONFIG_FILENAME = "URL.txt"
 SETTINGS_FILENAME = "程序配置.json"
 OUTPUT_FILENAME = "优选合集.txt"
+RUNTIME_DIRNAME = "CFBestIPMerger"
 
 
 def get_app_dir() -> Path:
@@ -53,6 +54,48 @@ def get_resource_path(relative_path: str) -> Path:
     if bundle_dir:
         return Path(bundle_dir) / relative_path
     return Path(__file__).resolve().parent.parent / relative_path
+
+
+def get_runtime_dir() -> Path | None:
+    """返回程序运行期的临时工作目录，取不到系统临时目录时返回 None。
+
+    优先用 %LOCALAPPDATA%\\Temp，其次 TEMP / TMP；都不可用时放弃隔离，
+    避免退化成在当前工作目录里新建目录。
+    """
+    root: Path | None = None
+    local = os.environ.get("LOCALAPPDATA")
+    if local:
+        root = Path(local) / "Temp"
+    else:
+        for key in ("TEMP", "TMP"):
+            value = os.environ.get(key)
+            if value:
+                root = Path(value)
+                break
+    if root is None:
+        return None
+    return root / RUNTIME_DIRNAME / "run"
+
+
+def isolate_working_directory() -> Path | None:
+    """把进程工作目录切到临时目录，避免第三方组件污染程序目录。
+
+    部分显卡驱动等第三方组件会往“当前工作目录”写日志目录（例如
+    ``NVIDIA Corporation\\umdlogs``）。本程序所有读写路径都由
+    :func:`get_app_dir` 等函数以绝对路径给出，不依赖 cwd，因此切换工作目录
+    不影响功能，却能让这类残留落到临时目录，不再出现在源码目录或 exe 旁边。
+    """
+    target = get_runtime_dir()
+    if target is None:
+        return None
+    try:
+        if target.resolve() == Path.cwd().resolve():
+            return None
+        target.mkdir(parents=True, exist_ok=True)
+        os.chdir(target)
+    except OSError:
+        return None
+    return target
 
 
 def open_local_path(path: Path) -> None:

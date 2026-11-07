@@ -25,6 +25,9 @@ def _configure_windows_process() -> None:
 
 def main() -> None:
     _configure_windows_process()
+    from cf_merger.paths import isolate_working_directory
+
+    isolate_working_directory()
     from cf_merger.ui import run_app
 
     run_app()
