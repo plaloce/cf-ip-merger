@@ -4,12 +4,13 @@ import queue
 import threading
 import tkinter as tk
 import tkinter.font as tkfont
+import webbrowser
 from dataclasses import dataclass
 from pathlib import Path
 from tkinter import messagebox, ttk
 from typing import Callable
 
-from . import APP_NAME, __version__
+from . import APP_NAME, PROJECT_URL, __version__
 from .config import (
     ConfigError,
     ConfigLoadResult,
@@ -431,7 +432,7 @@ class MergerApp:
         text_block.pack(side="left")
         tk.Label(
             text_block,
-            text="CF 优选 IP 合集工具",
+            text=APP_NAME,
             bg=NAVY,
             fg="#FFFFFF",
             font=self._font(17, "bold"),
@@ -497,6 +498,26 @@ class MergerApp:
 
         right = tk.Frame(self.footer, bg="#EAF1F8")
         right.pack(side="right", padx=12)
+
+        # 右下角常驻入口：点击打开 GitHub 项目主页
+        self.footer_github = tk.Label(
+            right,
+            text="GitHub项目",
+            bg="#EAF1F8",
+            fg=ACCENT,
+            font=self._font(8, "underline"),
+            cursor="hand2",
+        )
+        self.footer_github.pack(side="right", padx=(12, 0))
+        self.footer_github.bind("<Button-1>", self._open_project_page)
+
+        tk.Label(
+            right,
+            text="·",
+            bg="#EAF1F8",
+            fg="#A9B8C9",
+            font=self._font(8),
+        ).pack(side="right", padx=(8, 0))
         self.footer_version = tk.Label(
             right,
             text="本地处理 · 不上传数据",
@@ -2032,6 +2053,17 @@ class MergerApp:
         except OSError as exc:
             messagebox.showerror("无法打开输出目录", str(exc), parent=self.root)
 
+    def _open_project_page(self, _event: object = None) -> None:
+        """打开 GitHub 项目主页（右下角链接的点击处理）。"""
+        try:
+            webbrowser.open(PROJECT_URL)
+        except Exception as exc:  # 极端情况下无可用浏览器
+            messagebox.showerror(
+                "无法打开链接",
+                f"请手动在浏览器中访问 {PROJECT_URL}（{exc}）",
+                parent=self.root,
+            )
+
     # ------------------------------------------------------------------ 弹窗
 
     def _show_details_dialog(
@@ -2068,7 +2100,7 @@ class MergerApp:
         ).pack(side="left", padx=18, pady=17)
         tk.Label(
             dialog_header,
-            text="CF 优选 IP 合集工具",
+            text=APP_NAME,
             bg=NAVY,
             fg=HEADER_SUBTLE,
             font=self._font(8),
