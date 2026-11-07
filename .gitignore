@@ -41,3 +41,7 @@ internal/
 
 # ===== 构建时自动生成（版本号源自 cf_merger/__init__.py）=====
 build_support/
+
+# ===== 第三方程序在项目目录留下的残留 =====
+# NVIDIA 显卡驱动的用户态驱动日志目录，运行图形程序时可能自动生成
+NVIDIA Corporation/
